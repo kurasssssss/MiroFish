@@ -35,6 +35,15 @@ class Config:
     # Zep配置
     ZEP_API_KEY = os.environ.get('ZEP_API_KEY')
     
+    # ============= Bitget Trading API =============
+    BITGET_API_KEY = os.environ.get('BITGET_API_KEY', '')
+    BITGET_API_SECRET = os.environ.get('BITGET_API_SECRET', '')
+    BITGET_API_PASSPHRASE = os.environ.get('BITGET_API_PASSPHRASE', '')
+    
+    # ============= Telegram Bot =============
+    TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID', '')
+    
     # 文件上传配置
     MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50MB
     UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), '../uploads')
@@ -67,9 +76,24 @@ class Config:
     def validate(cls):
         """验证必要配置"""
         errors = []
+        
+        # ============= WYMAGANE ZMIENNE =============
         if not cls.LLM_API_KEY:
             errors.append("LLM_API_KEY 未配置")
         if not cls.ZEP_API_KEY:
             errors.append("ZEP_API_KEY 未配置")
+        
+        # ============= OPCJONALNE ZMIENNE - CROSS-WALIDACJA =============
+        # Bitget - jeśli ustawimy API_KEY, wymagamy też SECRET i PASSPHRASE
+        if cls.BITGET_API_KEY:
+            if not cls.BITGET_API_SECRET:
+                errors.append("BITGET_API_SECRET 未配置 (但 BITGET_API_KEY 已设置)")
+            if not cls.BITGET_API_PASSPHRASE:
+                errors.append("BITGET_API_PASSPHRASE 未配置 (但 BITGET_API_KEY 已设置)")
+        
+        # Telegram - jeśli ustawimy BOT_TOKEN, wymagamy też CHAT_ID
+        if cls.TELEGRAM_BOT_TOKEN:
+            if not cls.TELEGRAM_CHAT_ID:
+                errors.append("TELEGRAM_CHAT_ID 未配置 (但 TELEGRAM_BOT_TOKEN 已设置)")
+        
         return errors
-
