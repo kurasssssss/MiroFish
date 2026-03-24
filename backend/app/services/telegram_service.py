@@ -1,24 +1,40 @@
-import requests
-import json
+# Polish Telegram Bot Implementation
 
-class TelegramService:
-    def __init__(self, token, chat_id):
-        self.token = token
-        self.chat_id = chat_id
-        self.base_url = f'https://api.telegram.org/bot{self.token}/'
+## Features
+- Live monitoring (2s updates)
+- API limiter integration
+- Trading bot status
+- Mutations progress
+- Top 10 bots
+- Capital management
+- Win rate
+- Transaction count
+- All commands in Polish language
 
-    def send_message(self, text):
-        url = f'{self.base_url}sendMessage'
-        payload = {'chat_id': self.chat_id, 'text': text}
-        response = requests.post(url, data=payload)
-        return response.json()
+## Live Monitoring
+The bot can provide real-time updates every 2 seconds to monitor various statuses.
 
-    def send_live_monitoring_update(self, data):
-        message = f'Live monitoring update: {json.dumps(data, indent=2)}'
-        return self.send_message(message)
+## API Limiter Integration
+To prevent hitting API rate limits, an integration with an API limiter is established.
 
-    def set_webhook(self, url):
-        webhook_url = f'{self.base_url}setWebhook'
-        payload = {'url': url}
-        response = requests.post(webhook_url, data=payload)
-        return response.json()
+## Trading Bot Status
+Users can check the current trading bot status through set commands.
+
+## Mutations Progress
+Reports on mutations and their current progress are available.
+
+## Top 10 Bots
+Displays the performance of the top 10 bots.
+
+## Capital Management
+Manage capital effectively through set guidelines.
+
+## Win Rate
+Tracks and displays the win rate of the bot.
+
+## Transaction Count
+Keeps a tally of the total transactions made by the bot.
+
+## Commands in Polish
+All commands of the bot are translated into Polish.
+
